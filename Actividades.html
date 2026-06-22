@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Challenge: La Búsqueda de la PK</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-color: #161b22;
+            --accent-neon: #39ff14;
+            --accent-blue: #58a6ff;
+            --text-main: #c9d1d9;
+            --text-bright: #ffffff;
+            --border-color: #30363d;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .workspace {
+            max-width: 850px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            border: 2px solid var(--accent-neon);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+
+        h1 { color: var(--accent-neon); text-transform: uppercase; margin: 0; font-size: 2rem; }
+        .mission { font-style: italic; color: var(--accent-blue); }
+
+        .challenge-card {
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: "LEVEL " attr(data-level);
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-weight: bold;
+            color: var(--border-color);
+            font-size: 1.2rem;
+        }
+
+        h2 { color: var(--text-bright); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        th { background-color: #21262d; color: var(--accent-blue); padding: 12px; border: 1px solid var(--border-color); }
+        td { padding: 10px; border: 1px solid var(--border-color); text-align: center; }
+
+        .instructions {
+            background: rgba(88, 166, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .pista {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            border: 1px dashed #444;
+        }
+
+        .badge {
+            background-color: var(--accent-neon);
+            color: black;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-right: 5px;
+        }
+
+        ol { padding-left: 20px; }
+        li { margin-bottom: 12px; }
+
+        footer { text-align: center; color: #484f58; font-size: 0.8rem; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="workspace">
+    <header>
+        <h1>Database Challenge 2026</h1>
+        <p class="mission">Misión: Garantizar la Integridad de los Datos mediante la Jerarquía de Claves</p>
+    </header>
+
+    <!-- ACTIVIDAD 1 -->
+    <div class="challenge-card" data-level="01">
+        <h2>🚗 Actividad: La Identidad Vehicular</h2>
+        <p>Has sido contratado por la Intendencia para diseñar el registro de automóviles. El objetivo es evitar registros duplicados o confusos [1].</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nro_Chasis</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ABC 1234</td>
+                    <td>9BWZZZ311</td>
+                    <td>Toyota</td>
+                    <td>Corolla</td>
+                    <td>Blanco</td>
+                </tr>
+                <tr>
+                    <td>DEF 5678</td>
+                    <td>8ADZZZ422</td>
+                    <td>Ford</td>
+                    <td>Fiesta</td>
+                    <td>Negro</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="instructions">
+            <ol>
+                <li><strong>Identificación de Claves Candidatas:</strong> Encuentren todas las combinaciones que identifiquen al vehículo de forma única aplicando el concepto de <strong>minimalidad</strong> [2].</li>
+                <li><strong>Selección de la PK:</strong> Elijan una sola candidata para que sea la Clave Primaria oficial. Expliquen detalladamente por qué (consideren estabilidad y simplicidad) [2].</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ACTIVIDAD 2 -->
+    <div class="challenge-card" data-level="02">
+        <h2>🏥 Actividad: Gestión del Staff Médico</h2>
+        <p>Un hospital necesita organizar a sus profesionales para no cometer errores en guardias o recetas médicas [3].</p>
+        
+        <p><strong>Atributos disponibles:</strong> 
+            <code>ID_Interno</code>, <code>Matricula_Profesional</code>, <code>Nombre_Completo</code>, <code>Especialidad</code>, <code>Email_Institucional</code>, <code>Telefono</code> [3].
+        </p>
+
+        <div class="instructions">
+            <ol>
+                <li>Identifiquen <strong>dos Superclaves</strong> diferentes (aunque sobre información) [3].</li>
+                <li>Determinen las <strong>Claves Candidatas</strong> aplicando la regla de la red mínima [3].</li>
+                <li>Elijan la <strong>PK</strong> justificando según la estabilidad del dato [3].</li>
+            </ol>
+        </div>
+
+        <div class="pista">
+            <span class="badge">PISTA</span> Una Superclave es una red grande que atrapa al médico. Para que sea <strong>Candidata</strong>, debe ser la red más pequeña posible: si le sacas un atributo y ya no podés identificar al médico, ¡la encontraste! [3].
+        </div>
+    </div>
+
+    <footer>
+        Laboratorio de Diseño Lógico de Bases de Datos • Ref: Silberschatz et al. (2006) y Vygotsky (1978) [4, 5].
+    </footer>
+</div>
+
+</body>
+</html>
