@@ -3,115 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío de Bases de Datos: Jerarquía de Claves</title>
+    <title>Soluciones: Jerarquía de Claves e Integridad</title>
     <style>
         :root {
-            --bg-body: #f4f7f6;
+            --bg-page: #f8fafc;
             --bg-card: #ffffff;
-            --primary-blue: #1a365d;
-            --accent-blue: #3182ce;
-            --text-main: #2d3748;
-            --text-muted: #718096;
-            --border: #e2e8f0;
-            --highlight: #ebf8ff;
+            --primary-text: #1a202c;
+            --secondary-text: #4a5568;
+            --accent-blue: #2b6cb0;
+            --border-color: #e2e8f0;
+            --highlight: #edf2f7;
         }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            background-color: var(--bg-page);
+            color: var(--primary-text);
             margin: 0;
             padding: 20px;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 850px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         header {
-            background-color: var(--primary-blue);
+            background-color: #2d3748;
             color: white;
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; }
-        .subtitle { margin-top: 10px; font-weight: 300; opacity: 0.9; }
+        h1 { margin: 0; font-size: 1.6rem; }
+        .subtitle { opacity: 0.9; font-size: 1rem; margin-top: 5px; }
 
-        .challenge-section {
+        .solution-card {
             background-color: var(--bg-card);
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         h2 { 
-            color: var(--primary-blue); 
-            border-bottom: 2px solid var(--accent-blue); 
+            color: var(--accent-blue); 
+            border-bottom: 2px solid var(--highlight); 
             padding-bottom: 10px;
             margin-top: 0;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: white;
-        }
-
-        th { 
-            background-color: var(--highlight); 
-            color: var(--primary-blue); 
-            padding: 12px; 
-            border: 1px solid var(--border);
-            font-weight: 600;
-        }
-
-        td { 
-            padding: 10px; 
-            border: 1px solid var(--border); 
-            text-align: center;
-        }
-
-        .instruction-list {
-            padding-left: 20px;
-        }
-
-        .instruction-list li {
+        .tag {
+            display: inline-block;
+            background-color: var(--highlight);
+            color: var(--accent-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
             margin-bottom: 15px;
         }
 
-        .alert-box {
-            background-color: var(--highlight);
-            border-left: 5px solid var(--accent-blue);
-            padding: 15px;
-            border-radius: 4px;
-            font-size: 0.95rem;
-            margin-top: 20px;
+        .item-list {
+            list-style: none;
+            padding: 0;
         }
 
-        .badge {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            font-weight: bold;
+        .item-list li {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .key-term { font-weight: bold; color: var(--accent-blue); }
+
+        .justification {
+            background-color: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            color: var(--secondary-text);
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -119,71 +103,62 @@
 
 <div class="container">
     <header>
-        <h1>Laboratorio de Diseño Lógico</h1>
-        <p class="subtitle">Misión: Garantizar la Integridad Mediante la Unicidad</p>
+        <h1>Guía de Soluciones Técnicas</h1>
+        <p class="subtitle">Restricciones de Integridad y Unicidad</p>
     </header>
 
-    <!-- ACTIVIDAD VEHÍCULOS -->
-    <div class="challenge-section">
-        <h2>🚗 Actividad 1: El Registro de la Intendencia</h2>
-        <p>Como nuevos diseñadores de la Intendencia, deben asegurar que cada vehículo sea identificado sin errores para evitar duplicidad de multas o trámites [1].</p>
+    <!-- SOLUCIÓN ACTIVIDAD 1 -->
+    <div class="solution-card">
+        <span class="tag">ACTIVIDAD: VEHÍCULOS</span>
+        <h2>1. Identificación de Claves</h2>
         
-        <table>
-            <thead>
-                <tr>
-                    <th>Matrícula</th>
-                    <th>Nro_Chasis</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Color</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>ABC 1234</td>
-                    <td>9BWZZZ311</td>
-                    <td>Toyota</td>
-                    <td>Corolla</td>
-                    <td>Blanco</td>
-                </tr>
-                <tr>
-                    <td>DEF 5678</td>
-                    <td>8ADZZZ422</td>
-                    <td>Ford</td>
-                    <td>Fiesta</td>
-                    <td>Negro</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <ol class="instruction-list">
-            <li><strong>Búsqueda de Claves Candidatas:</strong> Enumeren todos los conjuntos de datos que identifiquen al vehículo de forma única. ¡Recuerden aplicar la regla de la <strong>minimalidad</strong>! [2].</li>
-            <li><strong>Elección de la PK:</strong> Seleccionen la Clave Primaria oficial. Justifiquen su elección basándose en la <strong>estabilidad</strong> del dato (¿cuál es menos probable que cambie en el tiempo?) [2].</li>
-        </ol>
+        <ul class="item-list">
+            <li>
+                <span class="key-term">Claves Candidatas:</span> Matrícula y Nro_Chasis. 
+                <br><small>Ambas cumplen con la minimalidad: son el conjunto más pequeño que identifica al auto.</small>
+            </li>
+            <li>
+                <span class="key-term">Clave Primaria (PK):</span> <u>Nro_Chasis</u>.
+                <div class="justification">
+                    <strong>Justificación:</strong> Se elige el Nro_Chasis por su <span class="key-term">estabilidad</span>. Mientras que la matrícula puede cambiar si el vehículo cambia de jurisdicción, el chasis es una propiedad inalterable grabada físicamente en el objeto.
+                </div>
+            </li>
+        </ul>
     </div>
 
-    <!-- ACTIVIDAD MÉDICOS -->
-    <div class="challenge-section">
-        <h2>🏥 Actividad 2: Sistema de Gestión Hospitalaria</h2>
-        <p>Un hospital requiere organizar los datos de su staff médico para garantizar la seguridad en la emisión de recetas [3].</p>
+    <!-- SOLUCIÓN ACTIVIDAD 2 -->
+    <div class="solution-card">
+        <span class="tag">ACTIVIDAD: STAFF MÉDICO</span>
+        <h2>2. Jerarquía de Claves en el Hospital</h2>
         
-        <p><strong>Atributos de la tabla:</strong> <br>
-            <code>ID_Interno</code>, <code>Matricula_Profesional</code>, <code>Nombre_Completo</code>, <code>Especialidad</code>, <code>Email_Institucional</code>, <code>Telefono</code>.
-        </p>
+        <ul class="item-list">
+            <li>
+                <span class="key-term">Superclaves:</span> (ID_Interno + Especialidad) o (Matricula_Profesional + Nombre_Completo). 
+                <br><small>Identifican al médico, pero contienen datos redundantes que no son mínimos.</small>
+            </li>
+            <li>
+                <span class="key-term">Claves Candidatas:</span> ID_Interno, Matricula_Profesional y Email_Institucional.
+            </li>
+            <li>
+                <span class="key-term">Clave Primaria (PK):</span> <u>ID_Interno</u>.
+                <div class="justification">
+                    <strong>Justificación:</strong> Es el dato más estable y controlado internamente por la institución. Garantiza la integridad al ser único e inmutable para el sistema administrativo del hospital.
+                </div>
+            </li>
+        </ul>
+    </div>
 
-        <ol class="instruction-list">
-            <li>Identifiquen <strong>dos Superclaves</strong> diferentes (pueden contener datos redundantes) [3].</li>
-            <li>Determinen las <strong>Claves Candidatas</strong> aplicando el criterio de minimalidad [3].</li>
-            <li>Definan la <strong>PK</strong> y expliquen por qué es la opción más segura para la integridad del sistema [3].</li>
-        </ol>
-
-        <div class="alert-box">
-            <strong>💡 Pista de Diseño:</strong> Una Clave Candidata es como una red mínima. Si le quitas un atributo y ya no puedes identificar al registro, entonces has encontrado una candidata [3].
-        </div>
+    <div style="background: #fffaf0; border: 1px solid #feebc8; padding: 20px; border-radius: 12px; font-size: 0.9rem;">
+        <strong>Resumen de Conceptos Clave:</strong>
+        <ul>
+            <li><strong>Superclave:</strong> Conjunto de columnas que identifican la fila (puede sobrar información).</li>
+            <li><strong>Clave Candidata:</strong> Superclave mínima (si le quitas algo, ya no identifica).</li>
+            <li><strong>PK:</strong> La candidata "oficial" elegida por estabilidad y eficiencia.</li>
+        </ul>
     </div>
 
     <footer>
-        Planificación del 24 de Junio • <strong>Bibliografía:</strong> Silberschatz et al. (2006) y Vygotsky (1978) [4, 5].
+        Basado en la Planificación del 24 de Junio • Referencias: Silberschatz et al. (2006) y Vygotsky (1978).
     </footer>
 </div>
 
