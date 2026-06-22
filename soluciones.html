@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Databases: Soluciones de Claves</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --accent: #22d3ee;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h1 { margin: 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        p.subtitle { opacity: 0.9; font-style: italic; }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        h2 { color: var(--accent); border-bottom: 1px solid #334155; padding-bottom: 10px; }
+
+        .solution-box {
+            background: rgba(34, 211, 238, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+
+        .pro-tip {
+            background: linear-gradient(45deg, #1e293b, #334155);
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        footer { text-align: center; margin-top: 50px; font-size: 0.8rem; color: #64748b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Key Master Challenge</h1>
+        <p class="subtitle">Guía de Soluciones: Superclaves, Candidatas y PKs</p>
+    </header>
+
+    <div class="card">
+        <h2>🚗 Actividad 1: El Desafío Vehicular</h2>
+        <p><strong>Contexto:</strong> Base de datos de la Intendencia para el registro de automóviles [4].</p>
+        
+        <div class="solution-box">
+            <span class="badge">Solución 1: Claves Candidatas</span>
+            <ul>
+                <li><strong>Matrícula:</strong> Es única por vehículo y mínima [5].</li>
+                <li><strong>Nro_Chasis:</strong> Identificador de fábrica único e inalterable [5].</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <span class="badge">Solución 2: Elección de la PK</span>
+            <p><strong>Seleccionada:</strong> <u>Nro_Chasis</u></p>
+            <p><strong>¿Por qué?</strong> Es el dato más estable [5]. Mientras que la matrícula puede cambiar si el auto se traslada de departamento, el chasis es físico e inmutable, garantizando mejor la integridad [5].</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🏥 Actividad 2: Gestión del Staff Médico</h2>
+        <p><strong>Contexto:</strong> Organización de profesionales en un hospital [6].</p>
+
+        <div class="solution-box">
+            <span class="badge">Solución 1: Superclaves (Con redundancia)</span>
+            <ul>
+                <li>(ID_Interno + Especialidad) [6].</li>
+                <li>(Matricula_Profesional + Nombre_Completo) [6].</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <span class="badge">Solución 2: Claves Candidatas (Minimalidad)</span>
+            <ul>
+                <li><strong>ID_Interno:</strong> Única y mínima [6].</li>
+                <li><strong>Matricula_Profesional:</strong> Única por ley y mínima [6].</li>
+                <li><strong>Email_Institucional:</strong> Candidata si el hospital asegura su unicidad [6].</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <span class="badge">Solución 3: Elección de la PK</span>
+            <p><strong>Seleccionada:</strong> <u>ID_Interno</u></p>
+            <p><strong>¿Por qué?</strong> Es un valor numérico corto controlado 100% por el hospital, lo que lo hace más eficiente y estable que el email o el nombre [6].</p>
+        </div>
+    </div>
+
+    <div class="pro-tip">
+        <strong>💡 Pro-Tip de Diseño:</strong> 
+        Recuerda que la diferencia fundamental entre una Superclave y una Candidata es la <strong>minimalidad</strong> [3]. Si puedes quitarle un atributo a tu clave y todavía puedes identificar la fila, ¡era una Superclave, no una Candidata! [3, 6].
+    </div>
+
+    <footer>
+        Basado en la Planificación del 24 de Junio • Referencias: Silberschatz et al. (2006) y Vygotsky (1978).
+    </footer>
+</div>
+
+</body>
+</html>
