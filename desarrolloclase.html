@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase: Restricciones de Integridad y Claves</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a202c;
+            --primary: #2b6cb0;
+            --accent: #e2e8f0;
+            --highlight: #f6ad55;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            display: none;
+            width: 80%;
+            max-width: 1000px;
+            height: 70vh;
+            padding: 40px;
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .slide.active { display: flex; }
+        h1 { color: var(--primary); font-size: 2.5rem; border-bottom: 4px solid var(--primary); padding-bottom: 10px; }
+        h2 { color: var(--primary); font-size: 2rem; }
+        p, li { font-size: 1.5rem; line-height: 1.6; }
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .pk-notacion { text-decoration: underline; font-weight: bold; }
+        .pista { background: var(--accent); padding: 15px; border-radius: 10px; font-style: italic; font-size: 1.2rem; }
+        .counter { position: absolute; top: 20px; right: 20px; color: var(--text); opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Portada -->
+    <div class="slide active">
+        <div class="counter">1 / 10</div>
+        <h1>Restricciones del Modelo Relacional</h1>
+        <h2>De la Superclave a la Clave Primaria</h2>
+        <p>Garantizando la <strong>Integridad</strong> y Calidad de los datos [1].</p>
+    </div>
+
+    <!-- Slide 2: Metas -->
+    <div class="slide">
+        <div class="counter">2 / 10</div>
+        <h2>Metas de Aprendizaje</h2>
+        <ul>
+            <li>Desarrollar la lógica de la <strong>unicidad</strong> (identidad de cada registro) [2].</li>
+            <li>Entender el <strong>Dominio</strong> como primer filtro de calidad [2].</li>
+        </ul>
+    </div>
+
+    <!-- Slide 3: Inicio / Motivación -->
+    <div class="slide">
+        <div class="counter">3 / 10</div>
+        <h2>Pregunta Disparadora</h2>
+        <p style="font-size: 2rem; text-align: center;">"Si tenemos 100 personas llamadas <strong>'Ana Silva'</strong>, ¿qué dato garantiza que el sistema nunca las confunda?" [3].</p>
+    </div>
+
+    <!-- Slide 4: El Dominio -->
+    <div class="slide">
+        <div class="counter">4 / 10</div>
+        <h2>1. Restricción de Dominio</h2>
+        <p>Es el "molde" o tipo de dato permitido para un atributo [2, 3].</p>
+        <ul>
+            <li><strong>Ejemplo:</strong> Edad (Solo números enteros positivos) [4].</li>
+            <li><strong>Importancia:</strong> Evita datos atómicos incorrectos [4].</li>
+        </ul>
+    </div>
+
+    <!-- Slide 5: Superclave -->
+    <div class="slide">
+        <div class="counter">5 / 10</div>
+        <h2>2. Superclave</h2>
+        <p>Cualquier conjunto de columnas que identifique a una fila [3].</p>
+        <p class="pista">Puede contener información que "sobra" (redundante) [5].</p>
+        <p><strong>Ejemplo:</strong> (Cédula + Nombre) [3].</p>
+    </div>
+
+    <!-- Slide 6: Clave Candidata -->
+    <div class="slide">
+        <div class="counter">6 / 10</div>
+        <h2>3. Clave Candidata</h2>
+        <p>Es una Superclave <strong>mínima</strong> [6].</p>
+        <ul>
+            <li>Si le quitas un atributo, ya no identifica a la fila unívocamente [5, 6].</li>
+            <li>Es la versión más eficiente de una superclave [7].</li>
+        </ul>
+    </div>
+
+    <!-- Slide 7: Clave Primaria (PK) -->
+    <div class="slide">
+        <div class="counter">7 / 10</div>
+        <h2>4. Clave Primaria (PK)</h2>
+        <p>Es la clave candidata elegida como <strong>identificador oficial</strong> [3, 7].</p>
+        <ul>
+            <li>Se elige por su <strong>estabilidad</strong> (no cambia) [7].</li>
+            <li>Notación: <span class="pk-notacion">Atributo subrayado</span> [3].</li>
+        </ul>
+    </div>
+
+    <!-- Slide 8: Modelado (Ejemplo Estudiante) -->
+    <div class="slide">
+        <div class="counter">8 / 10</div>
+        <h2>Modelado en Pizarra</h2>
+        <p><strong>Tabla Estudiante:</strong></p>
+        <p>(<span class="pk-notacion">Cédula</span>, Nombre, Email, Teléfono) [3].</p>
+        <ul>
+            <li><strong>Candidatas:</strong> Cédula, Email.</li>
+            <li><strong>PK Elegida:</strong> Cédula (por eficiencia y estabilidad) [3].</li>
+        </ul>
+    </div>
+
+    <!-- Slide 9: Actividad (Reto) -->
+    <div class="slide">
+        <div class="counter">9 / 10</div>
+        <h2>Actividad Grupal: Vehículos</h2>
+        <p><strong>Atributos:</strong> Matrícula, Nro_Chasis, Marca, Modelo, Color [8].</p>
+        <ol>
+            <li>Listar claves candidatas [6].</li>
+            <li>Elegir la <strong>PK</strong> y justificar [6, 7].</li>
+            <li>Definir dominio para "Año_Fabricación" [6].</li>
+        </ol>
+    </div>
+
+    <!-- Slide 10: Cierre -->
+    <div class="slide">
+        <div class="counter">10 / 10</div>
+        <h2>Preguntas de Cierre</h2>
+        <ol>
+            <li>¿Cuál es la diferencia entre Superclave y Candidata respecto a la <strong>minimalidad</strong>? [6].</li>
+            <li>¿Qué pasaría si ingresamos una <strong>edad negativa</strong> en el sistema? [4].</li>
+        </ol>
+    </div>
+
+    <div class="controls">
+        <button onclick="changeSlide(-1)">Anterior</button>
+        <button onclick="changeSlide(1)">Siguiente</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function changeSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+    </script>
+</body>
+</html>
