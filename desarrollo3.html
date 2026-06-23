@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación: Taller de Integridad Relacional</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .presentation-container { background: white; width: 95%; max-width: 900px; min-height: 580px; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; border-top: 10px solid #c0392b; }
+        .slide { display: none; animation: fadeIn 0.4s; }
+        .slide.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        h1 { color: #2c3e50; font-size: 1.8em; border-bottom: 2px solid #c0392b; padding-bottom: 10px; }
+        h2 { color: #2980b9; font-size: 1.4em; }
+        p, li { font-size: 1.1em; line-height: 1.6; color: #34495e; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
+        th, td { border: 1px solid #cfd8dc; padding: 12px; text-align: left; }
+        th { background-color: #f1f1f1; color: #2c3e50; }
+        
+        .error-highlight { color: #e74c3c; font-weight: bold; border: 2px solid #e74c3c; }
+        .pk-style { text-decoration: underline; font-weight: bold; color: #2c3e50; }
+        
+        .box { padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .highlight { background-color: #fff9c4; border-left: 6px solid #fbc02d; }
+        .solution { background-color: #e8f8f5; border-left: 6px solid #1abc9c; }
+        .question { background-color: #e1f5fe; border-left: 6px solid #0288d1; font-weight: bold; }
+
+        .controls { margin-top: 25px; display: flex; gap: 15px; align-items: center; }
+        button { padding: 12px 30px; font-size: 1em; cursor: pointer; border: none; border-radius: 8px; background-color: #2c3e50; color: white; transition: 0.3s; }
+        button:hover { background-color: #34495e; }
+        button:disabled { background-color: #b2bec3; cursor: not-allowed; }
+        .progress { color: #636e72; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container" id="slides">
+    
+    <!-- SLIDE 1: DESAFÍO RÁPIDO (TABLA LIMPIA) -->
+    <div class="slide active">
+        <h1>Inicio: Desafío Rápido</h1>
+        <p>Observen con atención la siguiente tabla de usuarios. ¿Pueden identificar qué datos rompen las reglas de integridad y calidad?</p>
+        <table>
+            <tr><th>ID (PK)</th><th>Nombre</th><th>Edad</th><th>Email</th><th>País</th></tr>
+            <tr><td>101</td><td>Carlos Sosa</td><td>22</td><td>csosa@mail.com</td><td>Uruguay</td></tr>
+            <tr><td>101</td><td>Ana Martínez</td><td>-5</td><td>ana.m@mail.com</td><td>Argentina</td></tr>
+            <tr><td>103</td><td>Juan Pérez</td><td>19</td><td>jp@mail.com</td><td>Brasil</td></tr>
+            <tr><td>104</td><td>Sofía Rey</td><td>25</td><td>jp@mail.com</td><td>Chile</td></tr>
+            <tr><td>105</td><td>Lucía Gómez</td><td>"Veinte"</td><td>lucia@mail.com</td><td>Paraguay</td></tr>
+        </table>
+    </div>
+
+    <!-- SLIDE 2: SOLUCIÓN TABLA ERRORES -->
+    <div class="slide">
+        <h1>Solución: Errores Detectados</h1>
+        <table>
+            <tr><th>ID (PK)</th><th>Nombre</th><th>Edad</th><th>Email</th><th>País</th></tr>
+            <tr><td>101</td><td>Carlos Sosa</td><td>22</td><td>csosa@mail.com</td><td>Uruguay</td></tr>
+            <tr><td class="error-highlight">101</td><td>Ana Martínez</td><td class="error-highlight">-5</td><td>ana.m@mail.com</td><td>Argentina</td></tr>
+            <tr><td>103</td><td>Juan Pérez</td><td>19</td><td class="error-highlight">jp@mail.com</td><td>Brasil</td></tr>
+            <tr><td>104</td><td>Sofía Rey</td><td>25</td><td class="error-highlight">jp@mail.com</td><td>Chile</td></tr>
+            <tr><td>105</td><td>Lucía Gómez</td><td class="error-highlight">"Veinte"</td><td>lucia@mail.com</td><td>Paraguay</td></tr>
+        </table>
+        <p><strong>Hallazgos:</strong> Repetición de Clave Primaria, valor negativo en edad, tipo de dato incorrecto (texto por número) y email duplicado.</p>
+    </div>
+
+    <!-- SLIDE 3: PREGUNTA DISPARADORA -->
+    <div class="slide">
+        <h1>Reflexión sobre el Diseño</h1>
+        <div class="box highlight">
+            <p><strong>Pregunta:</strong> "Si este es el registro de mi aplicación, ¿qué reglas de las que vimos antes están rotas y cómo afectan al sistema?"</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: RESPUESTA PREGUNTA DISPARADORA -->
+    <div class="slide">
+        <h1>Consecuencias Técnicas</h1>
+        <div class="box solution">
+            <ul>
+                <li><strong>Unicidad:</strong> Al repetir el ID, no podemos asegurar cuál es el registro correcto para operaciones de actualización o cobro.</li>
+                <li><strong>Dominio:</strong> Los errores de rango (-5) y tipo ("Veinte") impiden que el software realice cálculos o filtros por edad de forma confiable.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: CASO A - CONSIGNA -->
+    <div class="slide">
+        <h1>Taller: Caso A - Streaming de Música</h1>
+        <p>Mapear la entidad <strong>ARTISTA</strong> con sus atributos:</p>
+        <ul>
+            <li>ID_Artista (Identificador único).</li>
+            <li>Nombre_Artistico.</li>
+            <li>Año_Debut.</li>
+            <li>Género_Musical.</li>
+        </ul>
+        <div class="box highlight">
+            <strong>Tarea:</strong> Identificar y subrayar la PK oficial y definir la restricción de dominio para el Año de Debut.
+        </div>
+    </div>
+
+    <!-- SLIDE 6: CASO A - SOLUCIÓN -->
+    <div class="slide">
+        <h1>Solución: Caso A</h1>
+        <p><strong>Esquema Final:</strong> ARTISTA (<span class="pk-style">ID_Artista</span>, Nombre_Artistico, Año_Debut, Género_Musical).</p>
+        <div class="box solution">
+            <p><strong>Justificación:</strong> El ID es inalterable y único. El <strong>dominio</strong> del año debe ser de tipo Entero y estar restringido a valores lógicos (ej. mayor a 1900).</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: CASO B - CONSIGNA -->
+    <div class="slide">
+        <h1>Taller: Caso B - Torneos E-Sports</h1>
+        <p>Registrar a los <strong>JUGADORES</strong> con sus atributos:</p>
+        <ul>
+            <li>Nickname (Apodo único).</li>
+            <li>Nombre_Real.</li>
+            <li>Puntaje_Global.</li>
+            <li>Email_Contacto.</li>
+        </ul>
+        <div class="box highlight">
+            <strong>Tarea:</strong> Identificar las claves candidatas y seleccionar la PK justificando estabilidad y minimalidad.
+        </div>
+    </div>
+
+    <!-- SLIDE 8: CASO B - SOLUCIÓN -->
+    <div class="slide">
+        <h1>Solución: Caso B</h1>
+        <p><strong>Claves Candidatas:</strong> {Nickname} y {Email_Contacto}.</p>
+        <p><strong>Esquema Final:</strong> JUGADOR (<span class="pk-style">Nickname</span>, Nombre_Real, Puntaje_Global, Email_Contacto).</p>
+        <div class="box solution">
+            <p><strong>Justificación:</strong> Se elige el Nickname por ser el identificador primario en el contexto de videojuegos. El Nombre Real no es apto por la posibilidad de homónimos.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: SÍNTESIS CONCEPTO PK -->
+    <div class="slide">
+        <h1>Síntesis de Integridad</h1>
+        <ul>
+            <li>La <strong>PK</strong> debe ser única, mínima y estable en el tiempo.</li>
+            <li>Las restricciones de <strong>Dominio</strong> aseguran que los datos tengan sentido dentro del negocio.</li>
+            <li>Sin estas reglas, la base de datos pierde su capacidad de reflejar la realidad con precisión.</li>
+        </ul>
+    </div>
+
+    <!-- SLIDE 10: EVALUACIÓN 1 - PREGUNTA -->
+    <div class="slide">
+        <h1>Evaluación: Reto de Identidad</h1>
+        <div class="box question">
+            "Si eliminamos el Nickname y solo dejamos el Nombre_Real como identificador, ¿podemos asegurar la integridad de la información?"
+        </div>
+    </div>
+
+    <!-- SLIDE 11: EVALUACIÓN 1 - RESPUESTA -->
+    <div class="slide">
+        <h1>Respuesta: Reto de Identidad</h1>
+        <div class="box solution">
+            <p><strong>No.</strong> El nombre real no garantiza la unicidad. Al existir personas con el mismo nombre, el sistema no tendría forma de distinguir a dos jugadores diferentes sin una clave adicional.</p>
+        </div>
+    </div>
+
+    <!-- SLIDE 12: EVALUACIÓN 2 - PREGUNTA -->
+    <div class="slide">
+        <h1>Evaluación: Reto de Dominio</h1>
+        <div class="box question">
+            "¿Por qué es fundamental que el sistema bloquee el ingreso del año '2050' como fecha de debut de un artista hoy?"
+        </div>
+    </div>
+
+    <!-- SLIDE 13: EVALUACIÓN 2 - RESPUESTA -->
+    <div class="slide">
+        <h1>Respuesta: Reto de Dominio</h1>
+        <div class="box solution">
+            <p>Para garantizar la <strong>calidad de los datos</strong>. Una restricción de dominio bien definida evita que errores de carga o datos imposibles afecten la veracidad de la información almacenada.</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="controls">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>Anterior</button>
+    <span class="progress" id="progressIndicator">Página 1 / 13</span>
+    <button id="nextBtn" onclick="changeSlide(1)">Siguiente</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const indicator = document.getElementById('progressIndicator');
+
+    function changeSlide(step) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide += step;
+        slides[currentSlide].classList.add('active');
+        
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+        indicator.innerText = `Página ${currentSlide + 1} / ${slides.length}`;
+    }
+</script>
+
+</body>
+</html>
