@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Presentación: Jerarquía de Claves e Integridad</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1a202c;
+            --primary: #2d3748;
+            --accent: #3182ce;
+            --success: #166534; /* Verde para las negritas */
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            display: none;
+            width: 85%;
+            max-width: 1100px;
+            height: 75vh;
+            background: var(--card);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            flex-direction: column;
+            border: 1px solid #e2e8f0;
+        }
+        .slide.active { display: flex; }
+        h1 { color: var(--primary); font-size: 2.8rem; margin-bottom: 10px; border-bottom: 5px solid var(--accent); }
+        h2 { color: var(--accent); font-size: 2.2rem; margin-top: 0; }
+        p, li { font-size: 1.4rem; line-height: 1.5; margin-bottom: 10px; }
+        
+        /* Modificación solicitada: Negritas en color verde */
+        strong { color: var(--success); font-weight: bold; }
+        
+        .highlight { color: var(--accent); font-weight: bold; }
+        .pk { text-decoration: underline; font-weight: bold; color: var(--success); }
+        .example-box { background: #edf2f7; padding: 20px; border-radius: 10px; border-left: 6px solid var(--accent); margin: 15px 0; }
+        .analogia { font-style: italic; color: #4a5568; background: #fffaf0; padding: 15px; border-radius: 8px; border: 1px dashed #ed8936; }
+        .controls { position: fixed; bottom: 30px; display: flex; gap: 20px; }
+        button { padding: 12px 25px; font-size: 1.1rem; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 8px; transition: 0.3s; }
+        button:hover { background: var(--accent); }
+        .footer-info { position: absolute; bottom: 20px; right: 40px; font-size: 0.9rem; color: #a0aec0; }
+    </style>
+</head>
+<body>
+
+    <!-- Diapositiva 1: Portada -->
+    <div class="slide active">
+        <h1>Identidad y Unicidad</h1>
+        <h2>Restricciones del Modelo Relacional</h2>
+        <p>De la Superclave a la Clave Primaria: garantizando la <strong>calidad</strong> de los datos.</p>
+        <div class="example-box">
+            "La base de datos no es solo tablas, son reglas para evitar el error".
+        </div>
+    </div>
+
+    <!-- Diapositiva 2: Metas -->
+    <div class="slide">
+        <h2>¿Qué vamos a lograr hoy?</h2>
+        <ul>
+            <li>Dominar la lógica de <strong>Unicidad</strong> (Superclave, Candidata y PK).</li>
+            <li>Entender el <strong>Dominio</strong> como el primer filtro de calidad.</li>
+            <li>Aprender a elegir la mejor Clave Primaria para un diseño eficiente.</li>
+        </ul>
+    </div>
+
+    <!-- Diapositiva 3: Inicio -->
+    <div class="slide">
+        <h2>El problema de la identidad</h2>
+        <p style="font-size: 1.8rem; text-align: center; margin-top: 40px;">
+            "Si tenemos 100 personas llamadas <strong>'Ana Silva'</strong>, <br>¿qué dato garantiza que nunca las confundamos?".
+        </p>
+        <div class="example-box" style="text-align: center;">
+            ¿Cédula? ¿Email? ¿Número de registro?
+        </div>
+    </div>
+
+    <!-- Diapositiva 4: Dominio -->
+    <div class="slide">
+        <h2>1. Restricción de Dominio</h2>
+        <p>Es el <strong>"Molde de Calidad"</strong>: define qué valores son permitidos.</p>
+        <div class="example-box">
+            <strong>Ejemplos:</strong>
+            <ul>
+                <li>Edad: Solo números positivos.</li>
+                <li>Fecha: Formato DD/MM/AAAA.</li>
+            </ul>
+        </div>
+        <p>Si el dato no respeta el dominio (ej. una edad negativa), el sistema lo rechaza para mantener la <strong>integridad</strong>.</p>
+    </div>
+
+    <!-- Diapositiva 5: Superclave -->
+    <div class="slide">
+        <h2>2. Superclave</h2>
+        <p>Cualquier conjunto de columnas que identifique a una fila.</p>
+        <div class="analogia">
+            <strong>Analogía:</strong> Es una red de pesca gigante. Atrapa la fila, pero trae datos que <strong>"sobran"</strong>.
+        </div>
+        <div class="example-box">
+            <strong>Ejemplo:</strong> (Cédula + Nombre). Identifica a la persona, pero el Nombre no es necesario si ya tenemos la Cédula.
+        </div>
+    </div>
+
+    <!-- Diapositiva 6: Clave Candidata -->
+    <div class="slide">
+        <h2>3. Clave Candidata</h2>
+        <p>Es una Superclave <strong>mínima</strong>. No tiene datos redundantes.</p>
+        <div class="analogia">
+            <strong>Minimalidad:</strong> Si le quito un solo atributo y ya no puedo identificar a la persona, entonces es una Candidata.
+        </div>
+        <div class="example-box">
+            <strong>Ejemplos:</strong> Cédula, Matrícula Profesional, Email.
+        </div>
+    </div>
+
+    <!-- Diapositiva 7: Clave Primaria -->
+    <div class="slide">
+        <h2>4. Clave Primaria (PK)</h2>
+        <p>Es la candidata oficial elegida por el diseñador.</p>
+        <div class="example-box">
+            <strong>Criterios de elección:</strong>
+            <ol>
+                <li><strong>Estabilidad:</strong> Que el dato no cambie en el tiempo.</li>
+                <li><strong>Simplicidad:</strong> Que sea fácil de manejar por el sistema.</li>
+            </ol>
+        </div>
+        <p>Notación: Atributo <span class="pk">subrayado</span>.</p>
+    </div>
+
+    <!-- Diapositiva 8: Ejemplo Práctico -->
+    <div class="slide">
+        <h2>Ejemplo: Staff Médico</h2>
+        <p>Atributos: ID_Interno, Matrícula, Nombre, Especialidad.</p>
+        <div class="example-box">
+            <ul>
+                <li><strong>Superclave:</strong> (Matrícula + Nombre).</li>
+                <li><strong>Candidatas:</strong> ID_Interno, Matrícula.</li>
+                <li><strong>PK Elegida:</strong> <span class="pk">ID_Interno</span> (Estable y controlado).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Diapositiva 9: Actividad Grupal -->
+    <div class="slide">
+        <h2>Reto: Tabla Vehículos</h2>
+        <p>Atributos: Matrícula, Nro_Chasis, Marca, Modelo, Color.</p>
+        <div class="example-box">
+            <strong>Trabajo en equipo:</strong>
+            <ol>
+                <li>Encuentren todas las Claves Candidatas.</li>
+                <li>Elijan la <strong>PK</strong> y expliquen por qué.</li>
+                <li>Definan el dominio para <strong>"Año_Fabricación"</strong>.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Diapositiva 10: Cierre -->
+    <div class="slide">
+        <h2>Reflexión Final</h2>
+        <div class="example-box">
+            1. ¿Cuál es la diferencia entre Superclave y Candidata respecto a la <strong>minimalidad</strong>?
+        </div>
+        <div class="example-box">
+            2. ¿Por qué es vital que el sistema rechace datos que no cumplen el dominio?
+        </div>
+        <p style="text-align:center; color:var(--success); font-weight:bold;">¡Garantizar la integridad es asegurar la calidad!</p>
+    </div>
+
+    <div class="controls">
+        <button onclick="move(-1)">Anterior</button>
+        <button onclick="move(1)">Siguiente</button>
+    </div>
+    <div class="footer-info">Apoyo Visual para Diseño Lógico • 2026</div>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        function move(step) {
+            slides[current].classList.remove('active');
+            current = (current + step + slides.length) % slides.length;
+            slides[current].classList.add('active');
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') move(1);
+            if (e.key === 'ArrowLeft') move(-1);
+        });
+    </script>
+</body>
+</html>
